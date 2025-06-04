@@ -9,7 +9,7 @@ const DockCard = ({ dockId, status }) => {
       case 'Busy':
         return '#FAD0D0'; // light red
       case 'Warning':
-        return '#FFF3CD'; // warning/yellow (e.g., for D5/D6 in image)
+        return '#FFF3CD'; // light yellow
       default:
         return '#E0E0E0';
     }
@@ -19,21 +19,24 @@ const DockCard = ({ dockId, status }) => {
     <Card
       sx={{
         backgroundColor: getStatusColor(),
-        width: 100,
-        height: 60,
+        minWidth: { xs: 80, sm: 100 }, // responsive min width
+        height: { xs: 60, sm: 70 },
         borderRadius: 2,
         boxShadow: 'none',
-        textAlign: 'center',
         display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        px: 1,
       }}
     >
-      <CardContent sx={{ p: 0 }}>
-        <Typography variant="subtitle2" fontWeight={600}>
+      <CardContent sx={{ p: '8px 4px !important' }}>
+        <Typography variant="subtitle2" fontWeight={600} fontSize={{ xs: 12, sm: 14 }}>
           {dockId}
         </Typography>
-        <Typography variant="caption">{status}</Typography>
+        <Typography variant="caption" fontSize={{ xs: 10, sm: 12 }}>
+          {status}
+        </Typography>
       </CardContent>
     </Card>
   );

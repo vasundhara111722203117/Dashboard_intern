@@ -20,8 +20,14 @@ const FilterBar = ({ onFilterChange }) => {
   };
 
   return (
-    <Box sx={{ px: 2, py: 1 }}>
-      <Stack direction="row" spacing={1} flexWrap="wrap">
+    <Box sx={{ px: { xs: 0, sm: 2 }, py: { xs: 0, sm: 2 } }}>
+      <Stack
+        direction="row"
+        spacing={{ xs: 1, sm: 1 }}
+        flexWrap="wrap"
+        justifyContent={{ xs: 'center', sm: 'flex-start' }}
+        useFlexGap
+      >
         {FILTER_OPTIONS.map((filter) => (
           <Button
             key={filter}
@@ -30,7 +36,8 @@ const FilterBar = ({ onFilterChange }) => {
             sx={{
               textTransform: 'none',
               borderRadius: 5,
-              minWidth: '90px',
+              minWidth: { xs: 50, sm: 100 },
+              fontSize: { xs: '0.75rem', sm: '0.875rem' },
               fontWeight: 500,
               color: selected === filter ? 'white' : 'text.primary',
               backgroundColor: selected === filter ? '#f44336' : 'transparent',

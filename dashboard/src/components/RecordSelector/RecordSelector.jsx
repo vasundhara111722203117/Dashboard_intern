@@ -1,15 +1,29 @@
 import React from 'react';
-import { Box, Typography, Select, MenuItem, Stack } from '@mui/material';
+import { Typography, Select, MenuItem, Stack, useMediaQuery, useTheme } from '@mui/material';
 
 const RecordSelector = ({ rowsPerPage, onRowsPerPageChange }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Stack direction="row" alignItems="center" spacing={1}>
-      <Typography variant="body2">Rows per page:</Typography>
+    <Stack
+      direction={isMobile ? 'column' : 'row'}
+      alignItems="center"
+      spacing={isMobile ? 0.5 : 1}
+      textAlign={isMobile ? 'center' : 'left'}
+    >
+      <Typography variant="body2" fontSize={isMobile ? '0.8rem' : '1rem'}>
+        Rows per page:
+      </Typography>
       <Select
         value={rowsPerPage}
         onChange={(e) => onRowsPerPageChange(e.target.value)}
         size="small"
-        sx={{ minWidth: 80, fontSize: 14 }}
+        sx={{
+          minWidth: 80,
+          fontSize: isMobile ? 13 : 14,
+          mx: isMobile ? 'auto' : 0,
+        }}
       >
         {[5, 10, 25, 50].map((value) => (
           <MenuItem key={value} value={value}>

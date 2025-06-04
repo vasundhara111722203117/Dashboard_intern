@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Paper, Divider } from '@mui/material';
+import { Box, Paper, Divider,useMediaQuery, useTheme } from '@mui/material';
 
 import Header from '../components/Header/Header';
 import DockStatusPanel from '../components/DockStatus/DockStatusPanel';
@@ -59,13 +59,14 @@ const DashboardPage = () => {
   }, [search, filter, rowsPerPage]);
 
   return (
-    <Box>
+    <Box sx={{ ps: {xs: 1, sm: 2}, py:{xs: 1,sm: 2} }}>
       <Header />
       <DockStatusPanel />
       <FilterBar onFilterChange={setFilter} />
       <SearchSortBar onSearch={setSearch} onSortChange={setSortBy} />
 
-      <Paper sx={{ mx: 2, mt: 2, p: 2 }}>
+      <Paper sx={{ mx: 'auto', mt: 2, p:{xs : 1,sm: 2},
+    width: '100%', overflow:'auto', }}>
         <VehicleTable data={paginatedData} />
 
         <Divider sx={{ my: 2 }} />
@@ -75,7 +76,8 @@ const DashboardPage = () => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            flexWrap: 'wrap',
+            
+            flexDirection: {xs: 'column',sm:'row'},
             gap: 2,
           }}
         >

@@ -5,10 +5,12 @@ import {
   Typography,
   Button,
   IconButton,
-  Box,
   Tabs,
   Tab,
   Stack,
+  useMediaQuery,
+  useTheme,
+  Box,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
@@ -19,7 +21,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Header = () => {
-  const [value, setValue] = React.useState(1); // 0: Dashboard, 1: Docks, 2: Report
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -27,42 +31,75 @@ const Header = () => {
 
   return (
     <AppBar position="static" color="default" elevation={1}>
-      <Toolbar sx={{ justifyContent: 'space-between' }}>
-        {/* Left Side */}
-        <Stack direction="row" alignItems="center" spacing={3}>
-          <img
-            src={process.env.PUBLIC_URL + './'} // Replace with your logo
-            alt="Dock Logo"
-            style={{ width: 40 }}
-          />
-          <Tabs value={value} onChange={handleChange} textColor="primary" indicatorColor="primary">
+      <Toolbar
+        sx={{
+          flexDirection: isMobile ? 'column' : 'row',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          justifyContent: 'space-between',
+          gap: isMobile ? 2 : 0,
+          px: { xs: 1, sm: 3 },
+          py: isMobile ? 0 : 0,
+        }}
+      >
+        {/* Left Section */}
+        <Stack
+          direction={isMobile ? 'column' : 'row'}
+          alignItems="center"
+          spacing={0}
+          sx={{ width: '100%' }}
+        >
+          <Box display="flex" alignItems="center" gap={1}>
+            <img
+              src={process.env.PUBLIC_URL + './admin image.png'}
+              alt="Dock Logo"
+              style={{ width: 40 }}
+            />
+            <Typography variant="h6" sx={{ display: isMobile ? 'inline' : 'none' }}>
+              DOCK MANAGEMENT
+            </Typography>
+          </Box>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            textColor="primary"
+            indicatorColor="primary"
+            variant={isMobile ? 'scrollable' : 'standard'}
+            scrollButtons={isMobile ? 'auto' : false}
+            sx={{ width: isMobile ? '100%' : 'auto' }}
+          >
             <Tab label="Dashboard" />
             <Tab label="Docks" />
             <Tab label="Report" />
           </Tabs>
         </Stack>
 
-        {/* Right Side */}
-        <Stack direction="row" spacing={1} alignItems="center">
+        {/* Right Section */}
+        <Stack
+          direction="row"
+          spacing={1}
+          flexWrap="wrap"
+          justifyContent={isMobile ? 'center' : 'flex-end'}
+          sx={{ width: '100%' }}
+        >
           <Button
             variant="contained"
             startIcon={<AddIcon />}
             sx={{
-              backgroundColor: '#f44336',
+              backgroundColor: '#FF0000',
               '&:hover': { backgroundColor: '#d32f2f' },
               textTransform: 'none',
-              mr: 2,
+              mr: 1,
             }}
           >
             Add
           </Button>
 
           <Button startIcon={<ReportProblemIcon />} sx={{ textTransform: 'none' }}>
-            Report an issue
+            Report
           </Button>
 
           <Button startIcon={<CloudDownloadIcon />} sx={{ textTransform: 'none' }}>
-            Download App
+            Download
           </Button>
 
           <IconButton
@@ -70,7 +107,6 @@ const Header = () => {
               backgroundColor: '#f44336',
               color: 'white',
               '&:hover': { backgroundColor: '#d32f2f' },
-              ml: 1,
             }}
           >
             <QrCodeScannerIcon />
@@ -79,11 +115,9 @@ const Header = () => {
           <IconButton>
             <NotificationsIcon />
           </IconButton>
-
           <IconButton>
             <SettingsIcon />
           </IconButton>
-
           <IconButton>
             <AccountCircleIcon />
           </IconButton>

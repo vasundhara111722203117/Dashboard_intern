@@ -5,6 +5,8 @@ import {
   Checkbox,
   Select,
   MenuItem,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 const VehicleTableRow = ({ rowData }) => {
@@ -18,18 +20,32 @@ const VehicleTableRow = ({ rowData }) => {
     duration,
   } = rowData;
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <TableRow hover>
       <TableCell padding="checkbox">
-        <Checkbox />
+        <Checkbox size={isMobile ? 'small' : 'medium'} />
       </TableCell>
-      <TableCell sx={{ fontWeight: 600, color: '#1a73e8' }}>
+
+      <TableCell
+        sx={{
+          fontWeight: 600,
+          color: '#1a73e8',
+          fontSize: isMobile ? 12 : 14,
+        }}
+      >
         {vehicleNumber}
       </TableCell>
-      <TableCell>{driverName}</TableCell>
-      <TableCell>{date}</TableCell>
-      <TableCell>{dockInTime}</TableCell>
-      <TableCell>{dockOutTime || '--:--'}</TableCell>
+
+      <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{driverName}</TableCell>
+      <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{date}</TableCell>
+      <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{dockInTime}</TableCell>
+      <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>
+        {dockOutTime || '--:--'}
+      </TableCell>
+
       <TableCell>
         <Select
           value={status}
@@ -37,8 +53,8 @@ const VehicleTableRow = ({ rowData }) => {
           sx={{
             backgroundColor: '#fff',
             borderRadius: 2,
-            fontSize: 14,
-            minWidth: 100,
+            fontSize: isMobile ? 12 : 14,
+            minWidth: isMobile ? 80 : 100,
           }}
           disableUnderline
         >
@@ -48,7 +64,8 @@ const VehicleTableRow = ({ rowData }) => {
           <MenuItem value="Cancelled">Cancelled</MenuItem>
         </Select>
       </TableCell>
-      <TableCell>{duration}</TableCell>
+
+      <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{duration}</TableCell>
     </TableRow>
   );
 };

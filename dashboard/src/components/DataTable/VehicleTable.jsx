@@ -29,7 +29,7 @@ const VehicleTable = ({ data }) => {
   const menuItemStyles = {
     '&.Mui-selected': {
       backgroundColor: '#fff', // No blue background on select
-      color: 'black',
+      color: 'solid black',
     },
     '&.Mui-selected:hover': {
       backgroundColor: '#eee', // Light gray on hover

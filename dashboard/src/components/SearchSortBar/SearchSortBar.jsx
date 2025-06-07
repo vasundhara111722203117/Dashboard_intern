@@ -28,28 +28,28 @@ const SearchSortBar = ({ onSearch, onSortChange }) => {
 
   return (
     <Box sx={{ px: 1, py: 1 }}>
-      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
+      <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
         {/* Search Bar */}
         <Paper
           component="form"
           sx={{
-            p: '3px 6px',
+            p: '3px 5px',
             display: 'flex',
             alignItems: 'center',
-            width: 300,
+            width: 200,
             borderRadius: 5,
             boxShadow: 'none',
             border: '1px solid #ccc',
           }}
         >
-          <IconButton sx={{ p: '5px' }} disabled>
+          <IconButton sx={{ p: '2px' }} disabled>
             <SearchIcon />
           </IconButton>
           <InputBase
             placeholder="Search vehicle..."
             value={searchTerm}
             onChange={handleSearchChange}
-            sx={{ ml: 1, flex: 1 }}
+            sx={{ ml: 2, flex: 2 }}
           />
         </Paper>
 
@@ -57,7 +57,7 @@ const SearchSortBar = ({ onSearch, onSortChange }) => {
         <IconButton
           sx={{
             border: '1px solid #ccc',
-            borderRadius: 3,
+            borderRadius: 2,
             p: 0,
             backgroundColor: '#FFF0F5',
             '&:hover': { backgroundColor: '#AFEEEE' },
@@ -75,7 +75,7 @@ const SearchSortBar = ({ onSearch, onSortChange }) => {
             height: 30,
             minWidth: 50,
             borderRadius: 5,
-            '.MuiSelect-outlined': { paddingY: '8px' },
+            '.MuiSelect-outlined': { paddingY: '4px' },
           }}
         >
           <MenuItem value="">Sort By</MenuItem>

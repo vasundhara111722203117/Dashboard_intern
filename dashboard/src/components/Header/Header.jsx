@@ -3,7 +3,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   IconButton,
   Stack,
   useMediaQuery,
@@ -13,9 +12,10 @@ import {
   MenuItem,
   Tabs,
   Tab,
+  Button,
+  Select,
 } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -30,10 +30,7 @@ const Header = () => {
 
   const openIconMenu = (e) => setIconAnchor(e.currentTarget);
   const closeIconMenu = () => setIconAnchor(null);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const handleChange = (event, newValue) => setValue(newValue);
 
   return (
     <AppBar position="static" color="default" elevation={1}>
@@ -46,43 +43,58 @@ const Header = () => {
         }}
       >
         {/* Left Section */}
-        <Box sx={{ flex: 1, display: 'flex', alignItems: 'right' }}>
+        <Box sx={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           <Box display="flex" alignItems="center" gap={3}>
             <img
               src={process.env.PUBLIC_URL + './dock.png'}
               alt="Dock Logo"
               style={{ width: 180 }}
             />
-            
           </Box>
         </Box>
 
         {/* Center Section */}
-        <Box sx={{ flex: 3, display: 'flex', justifyContent: 'left' }}>
+        <Box sx={{ flex: 3, display: 'flex', justifyContent: 'flex-start', alignItems: 'center', gap: 1 }}>
           {!isMobile && (
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              textColor="inherit"
-              indicatorColor="secondary"
-              sx={{
-                '& .MuiTabs-indicator': {
+            <>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                textColor="inherit"
+                indicatorColor="secondary"
+                sx={{
+                  '& .MuiTabs-indicator': {
+                    backgroundColor: '#f44336',
+                  },
+                  '& .MuiTab-root': {
+                    color: '#000',
+                  },
+                  '& .MuiTab-root.Mui-selected': {
+                    color: '#f44336',
+                  },
+                }}
+              >
+                <Tab label="Dashboard" />
+                <Tab label="Docks" />
+                <Tab label="Report" />
+              </Tabs>
+
+              {/* +Add Button (Curved Rectangle near Docks) */}
+              <Button
+                variant="contained"
+                sx={{
                   backgroundColor: '#f44336',
-                },
-                '& .MuiTab-root':{
-                  color: '#000',
-                },
-                '& .MuiTab-root.Mui-selected': {
-                  color: '#f44336',
-                },
-              }}
-            >
-              
-              <Tab label="Dashboard" />
-              <Tab label="Docks" />
-              <Tab label="Report" />
-            </Tabs>
-            
+                  color: 'white',
+                  textTransform: 'none',
+                  borderRadius: '10px',
+                  px: 3,
+                  py: 1,
+                  '&:hover': { backgroundColor: '#d32f2f' },
+                }}
+              >
+                +Add
+              </Button>
+            </>
           )}
         </Box>
 
@@ -93,26 +105,14 @@ const Header = () => {
               <MoreVertIcon />
             </IconButton>
           ) : (
-            <Stack direction="row" spacing={1} alignItems="left">
-              {/* +Add Button */}
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: '#f44336',
-                  color: 'white',
-                  textTransform: 'none',
-                  '&:hover': { backgroundColor: '#d32f2f' },
-                }}
-              >
-                +Add
-              </Button>
-
-              {/* Report Button with Icon */}
+            <Stack direction="row" spacing={1} alignItems="center">
+              {/* Report Button (Curved Rectangle) */}
               <Button
                 variant="outlined"
                 startIcon={<ReportProblemIcon />}
                 sx={{
                   textTransform: 'none',
+                  borderRadius: '10px',
                   borderColor: '#000',
                   color: '#000',
                   '&:hover': {
@@ -124,24 +124,36 @@ const Header = () => {
                 Report
               </Button>
 
-              {/* Download Button with Icon */}
-              <Button
+              {/* Download Dropdown with Black Border */}
+              <Select
+                defaultValue=""
+                displayEmpty
                 variant="outlined"
-                startIcon={<CloudDownloadIcon />}
+                size="small"
                 sx={{
-                  textTransform: 'none',
-                  borderColor: '#000',
+                  minWidth: 20,
+                  borderRadius: '10px',
+                  backgroundColor: 'white',
                   color: '#000',
-                  '&:hover': {
-                    backgroundColor: '#e0e0e0',
-                    borderColor: '#000',
+                  fontWeight: 500,
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'black',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'black',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'black',
                   },
                 }}
               >
-                Download
-              </Button>
+                <MenuItem value="">Download</MenuItem>
+                <MenuItem value="pdf">PDF</MenuItem>
+                <MenuItem value="csv">CSV</MenuItem>
+                <MenuItem value="excel">Excel</MenuItem>
+              </Select>
 
-              {/* QR Scanner Button with Text */}
+              {/* Scan Button */}
               <Button
                 variant="contained"
                 startIcon={<QrCodeScannerIcon />}
@@ -149,6 +161,8 @@ const Header = () => {
                   backgroundColor: '#f44336',
                   color: 'white',
                   textTransform: 'none',
+                  borderRadius: '10px',
+                  px: 2,
                   '&:hover': { backgroundColor: '#d32f2f' },
                 }}
               >
@@ -198,9 +212,6 @@ const Header = () => {
       <Menu anchorEl={iconAnchor} open={Boolean(iconAnchor)} onClose={closeIconMenu}>
         <MenuItem onClick={closeIconMenu}>
           <ReportProblemIcon sx={{ mr: 1 }} /> Report
-        </MenuItem>
-        <MenuItem onClick={closeIconMenu}>
-          <CloudDownloadIcon sx={{ mr: 1 }} /> Download
         </MenuItem>
         <MenuItem onClick={closeIconMenu}>
           <QrCodeScannerIcon sx={{ mr: 1 }} /> Scan

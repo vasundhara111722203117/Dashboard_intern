@@ -19,6 +19,26 @@ const VehicleTable = ({ data }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  const cellStyle = {
+    border: '1px solid #ccc',
+    fontSize: isMobile ? 12 : 14,
+    padding: isMobile ? '6px 8px' : '8px 12px',
+  };
+
+  // Style for MenuItem to remove blue highlight
+  const menuItemStyles = {
+    '&.Mui-selected': {
+      backgroundColor: '#fff', // No blue background on select
+      color: 'black',
+    },
+    '&.Mui-selected:hover': {
+      backgroundColor: '#eee', // Light gray on hover
+    },
+    '&:hover': {
+      backgroundColor: '#eee', // Light gray on normal hover
+    },
+  };
+
   return (
     <Box sx={{ overflowX: 'auto' }}>
       <TableContainer
@@ -32,56 +52,80 @@ const VehicleTable = ({ data }) => {
         <Table size={isMobile ? 'small' : 'medium'}>
           <TableHead>
             <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-              <TableCell padding="checkbox">
+              <TableCell padding="checkbox" sx={cellStyle}>
                 <Checkbox size={isMobile ? 'small' : 'medium'} />
               </TableCell>
-              <TableCell>Vehicle Number</TableCell>
-              <TableCell>Driver Name</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Dock In Time</TableCell>
-              <TableCell>Dock Out Time</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Duration</TableCell>
+              <TableCell sx={cellStyle}>Vehicle Number</TableCell>
+              <TableCell sx={cellStyle}>Driver Name</TableCell>
+              <TableCell sx={cellStyle}>Date</TableCell>
+              <TableCell sx={cellStyle}>Dock In Time</TableCell>
+              <TableCell sx={cellStyle}>Dock Out Time</TableCell>
+              <TableCell sx={cellStyle}>Status</TableCell>
+              <TableCell sx={cellStyle}>Duration</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
-              <TableRow key={index} hover>
-                <TableCell padding="checkbox">
-                  <Checkbox size={isMobile ? 'small' : 'medium'} />
-                </TableCell>
-                <TableCell
-                  sx={{ fontWeight: 600, color: '#1a73e8', fontSize: isMobile ? 12 : 14 }}
-                >
-                  {row.vehicleNumber}
-                </TableCell>
-                <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{row.driverName}</TableCell>
-                <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{row.date}</TableCell>
-                <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{row.dockInTime}</TableCell>
-                <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>
-                  {row.dockOutTime || '--:--'}
-                </TableCell>
-                <TableCell>
-                  <Select
-                    value={row.status}
-                    size="small"
+            {data.map((row, index) => {
+              const selectStyles = {
+                backgroundColor: '#fff',
+                color: 'black',
+                borderRadius: 2,
+                fontSize: isMobile ? 12 : 14,
+                minWidth: isMobile ? 80 : 100,
+                border: '1.5px solid black',
+                '&.Mui-focused': {
+                  borderColor: 'black',
+                  backgroundColor: '#fff',
+                },
+                '&.MuiOutlinedInput-root': {
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'black',
+                  },
+                },
+              };
+
+              return (
+                <TableRow key={index} hover>
+                  <TableCell padding="checkbox" sx={cellStyle}>
+                    <Checkbox size={isMobile ? 'small' : 'medium'} />
+                  </TableCell>
+                  <TableCell
                     sx={{
-                      backgroundColor: '#fff',
-                      borderRadius: 2,
-                      fontSize: isMobile ? 12 : 14,
-                      minWidth: isMobile ? 80 : 100,
+                      ...cellStyle,
+                      fontWeight: 600,
+                      color: 'black',
                     }}
-                    disableUnderline
                   >
-                    <MenuItem value="Queue">Queue</MenuItem>
-                    <MenuItem value="Docked">Docked</MenuItem>
-                    <MenuItem value="Completed">Completed</MenuItem>
-                    <MenuItem value="Cancelled">Cancelled</MenuItem>
-                  </Select>
-                </TableCell>
-                <TableCell sx={{ fontSize: isMobile ? 12 : 14 }}>{row.duration}</TableCell>
-              </TableRow>
-            ))}
+                    {row.vehicleNumber}
+                  </TableCell>
+                  <TableCell sx={cellStyle}>{row.driverName}</TableCell>
+                  <TableCell sx={cellStyle}>{row.date}</TableCell>
+                  <TableCell sx={cellStyle}>{row.dockInTime}</TableCell>
+                  <TableCell sx={cellStyle}>{row.dockOutTime || '--:--'}</TableCell>
+                  <TableCell sx={cellStyle}>
+                    <Select
+                      value={row.status}
+                      size="small"
+                      sx={selectStyles}
+                      disableUnderline
+                      MenuProps={{
+                        PaperProps: {
+                          sx: {
+                            border: '1px  black',
+                          },
+                        },
+                      }}
+                    >
+                      <MenuItem value="Queue" sx={menuItemStyles}>Queue</MenuItem>
+                      <MenuItem value="Docked" sx={menuItemStyles}>Docked</MenuItem>
+                      <MenuItem value="Completed" sx={menuItemStyles}>Completed</MenuItem>
+                      <MenuItem value="Cancelled" sx={menuItemStyles}>Cancelled</MenuItem>
+                    </Select>
+                  </TableCell>
+                  <TableCell sx={cellStyle}>{row.duration}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>

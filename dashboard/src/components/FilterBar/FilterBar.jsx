@@ -35,8 +35,8 @@ const FilterBar = ({ onFilterChange }) => {
             onClick={() => handleClick(filter)}
             sx={{
               textTransform: 'none',
-              borderRadius: 5,
-              minWidth: { xs: 50, sm: 100 },
+              borderRadius: 2,
+              minWidth: { xs: 50, sm: 10 },
               fontSize: { xs: '0.75rem', sm: '0.875rem' },
               fontWeight: 500,
               color: selected === filter ? 'white' : 'text.primary',

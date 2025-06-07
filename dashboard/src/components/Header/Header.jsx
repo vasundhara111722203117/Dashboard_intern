@@ -5,25 +5,31 @@ import {
   Typography,
   Button,
   IconButton,
-  Tabs,
-  Tab,
   Stack,
   useMediaQuery,
   useTheme,
   Box,
+  Menu,
+  MenuItem,
+  Tabs,
+  Tab,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [value, setValue] = React.useState(1);
+  const [iconAnchor, setIconAnchor] = React.useState(null);
+  const [value, setValue] = React.useState(0);
+
+  const openIconMenu = (e) => setIconAnchor(e.currentTarget);
+  const closeIconMenu = () => setIconAnchor(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -33,96 +39,182 @@ const Header = () => {
     <AppBar position="static" color="default" elevation={1}>
       <Toolbar
         sx={{
-          flexDirection: isMobile ? 'column' : 'row',
-          alignItems: isMobile ? 'flex-start' : 'center',
+          display: 'flex',
+          alignItems: 'center',
           justifyContent: 'space-between',
-          gap: isMobile ? 2 : 0,
           px: { xs: 1, sm: 3 },
-          py: isMobile ? 0 : 0,
         }}
       >
         {/* Left Section */}
-        <Stack
-          direction={isMobile ? 'column' : 'row'}
-          alignItems="center"
-          spacing={0}
-          sx={{ width: '100%' }}
-        >
-          <Box display="flex" alignItems="center" gap={1}>
+        <Box sx={{ flex: 1, display: 'flex', alignItems: 'right' }}>
+          <Box display="flex" alignItems="center" gap={3}>
             <img
-              src={process.env.PUBLIC_URL + './admin image.png'}
+              src={process.env.PUBLIC_URL + './dock.png'}
               alt="Dock Logo"
-              style={{ width: 40 }}
+              style={{ width: 180 }}
             />
-            <Typography variant="h6" sx={{ display: isMobile ? 'inline' : 'none' }}>
-              DOCK MANAGEMENT
-            </Typography>
+            
           </Box>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="primary"
-            indicatorColor="primary"
-            variant={isMobile ? 'scrollable' : 'standard'}
-            scrollButtons={isMobile ? 'auto' : false}
-            sx={{ width: isMobile ? '100%' : 'auto' }}
-          >
-            <Tab label="Dashboard" />
-            <Tab label="Docks" />
-            <Tab label="Report" />
-          </Tabs>
-        </Stack>
+        </Box>
+
+        {/* Center Section */}
+        <Box sx={{ flex: 3, display: 'flex', justifyContent: 'left' }}>
+          {!isMobile && (
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              textColor="inherit"
+              indicatorColor="secondary"
+              sx={{
+                '& .MuiTabs-indicator': {
+                  backgroundColor: '#f44336',
+                },
+                '& .MuiTab-root':{
+                  color: '#000',
+                },
+                '& .MuiTab-root.Mui-selected': {
+                  color: '#f44336',
+                },
+              }}
+            >
+              
+              <Tab label="Dashboard" />
+              <Tab label="Docks" />
+              <Tab label="Report" />
+            </Tabs>
+            
+          )}
+        </Box>
 
         {/* Right Section */}
-        <Stack
-          direction="row"
-          spacing={1}
-          flexWrap="wrap"
-          justifyContent={isMobile ? 'center' : 'flex-end'}
-          sx={{ width: '100%' }}
-        >
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            sx={{
-              backgroundColor: '#FF0000',
-              '&:hover': { backgroundColor: '#d32f2f' },
-              textTransform: 'none',
-              mr: 1,
-            }}
-          >
-            Add
-          </Button>
+        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+          {isMobile ? (
+            <IconButton onClick={openIconMenu}>
+              <MoreVertIcon />
+            </IconButton>
+          ) : (
+            <Stack direction="row" spacing={1} alignItems="left">
+              {/* +Add Button */}
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: '#f44336',
+                  color: 'white',
+                  textTransform: 'none',
+                  '&:hover': { backgroundColor: '#d32f2f' },
+                }}
+              >
+                +Add
+              </Button>
 
-          <Button startIcon={<ReportProblemIcon />} sx={{ textTransform: 'none' }}>
-            Report
-          </Button>
+              {/* Report Button with Icon */}
+              <Button
+                variant="outlined"
+                startIcon={<ReportProblemIcon />}
+                sx={{
+                  textTransform: 'none',
+                  borderColor: '#000',
+                  color: '#000',
+                  '&:hover': {
+                    backgroundColor: '#e0e0e0',
+                    borderColor: '#000',
+                  },
+                }}
+              >
+                Report
+              </Button>
 
-          <Button startIcon={<CloudDownloadIcon />} sx={{ textTransform: 'none' }}>
-            Download
-          </Button>
+              {/* Download Button with Icon */}
+              <Button
+                variant="outlined"
+                startIcon={<CloudDownloadIcon />}
+                sx={{
+                  textTransform: 'none',
+                  borderColor: '#000',
+                  color: '#000',
+                  '&:hover': {
+                    backgroundColor: '#e0e0e0',
+                    borderColor: '#000',
+                  },
+                }}
+              >
+                Download
+              </Button>
 
-          <IconButton
-            sx={{
-              backgroundColor: '#f44336',
-              color: 'white',
-              '&:hover': { backgroundColor: '#d32f2f' },
-            }}
-          >
-            <QrCodeScannerIcon />
-          </IconButton>
+              {/* QR Scanner Button with Text */}
+              <Button
+                variant="contained"
+                startIcon={<QrCodeScannerIcon />}
+                sx={{
+                  backgroundColor: '#f44336',
+                  color: 'white',
+                  textTransform: 'none',
+                  '&:hover': { backgroundColor: '#d32f2f' },
+                }}
+              >
+                Scan
+              </Button>
 
-          <IconButton>
-            <NotificationsIcon />
-          </IconButton>
-          <IconButton>
-            <SettingsIcon />
-          </IconButton>
-          <IconButton>
-            <AccountCircleIcon />
-          </IconButton>
-        </Stack>
+              <IconButton>
+                <NotificationsIcon />
+              </IconButton>
+
+              <IconButton>
+                <SettingsIcon />
+              </IconButton>
+
+              <IconButton>
+                <AccountCircleIcon />
+              </IconButton>
+            </Stack>
+          )}
+        </Box>
       </Toolbar>
+
+      {/* Mobile Tabs */}
+      {isMobile && (
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          textColor="inherit"
+          indicatorColor="secondary"
+          variant="fullWidth"
+          sx={{
+            '& .MuiTabs-indicator': {
+              backgroundColor: '#f44336',
+            },
+            '& .MuiTab-root.Mui-selected': {
+              color: '#f44336',
+            },
+          }}
+        >
+          <Tab label="Dashboard" />
+          <Tab label="Docks" />
+          <Tab label="Report" />
+        </Tabs>
+      )}
+
+      {/* Mobile Icon Menu */}
+      <Menu anchorEl={iconAnchor} open={Boolean(iconAnchor)} onClose={closeIconMenu}>
+        <MenuItem onClick={closeIconMenu}>
+          <ReportProblemIcon sx={{ mr: 1 }} /> Report
+        </MenuItem>
+        <MenuItem onClick={closeIconMenu}>
+          <CloudDownloadIcon sx={{ mr: 1 }} /> Download
+        </MenuItem>
+        <MenuItem onClick={closeIconMenu}>
+          <QrCodeScannerIcon sx={{ mr: 1 }} /> Scan
+        </MenuItem>
+        <MenuItem onClick={closeIconMenu}>
+          <NotificationsIcon sx={{ mr: 1 }} /> Notifications
+        </MenuItem>
+        <MenuItem onClick={closeIconMenu}>
+          <SettingsIcon sx={{ mr: 1 }} /> Settings
+        </MenuItem>
+        <MenuItem onClick={closeIconMenu}>
+          <AccountCircleIcon sx={{ mr: 1 }} /> Account
+        </MenuItem>
+      </Menu>
     </AppBar>
   );
 };

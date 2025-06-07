@@ -28,12 +28,12 @@ const SearchSortBar = ({ onSearch, onSortChange }) => {
 
   return (
     <Box sx={{ px: 1, py: 1 }}>
-      <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
+      <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
         {/* Search Bar */}
         <Paper
           component="form"
           sx={{
-            p: '5px 8px',
+            p: '3px 6px',
             display: 'flex',
             alignItems: 'center',
             width: 300,
@@ -57,8 +57,8 @@ const SearchSortBar = ({ onSearch, onSortChange }) => {
         <IconButton
           sx={{
             border: '1px solid #ccc',
-            borderRadius: 2,
-            p: 1,
+            borderRadius: 3,
+            p: 0,
             backgroundColor: '#FFF0F5',
             '&:hover': { backgroundColor: '#AFEEEE' },
           }}
@@ -72,7 +72,7 @@ const SearchSortBar = ({ onSearch, onSortChange }) => {
           onChange={handleSortChange}
           displayEmpty
           sx={{
-            height: 40,
+            height: 30,
             minWidth: 50,
             borderRadius: 5,
             '.MuiSelect-outlined': { paddingY: '8px' },
